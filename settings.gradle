@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name='pit-collection-2020'
