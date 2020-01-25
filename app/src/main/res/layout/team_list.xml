@@ -5,10 +5,9 @@
     android:orientation = "vertical">
 
     <ListView
-        android:id="@+id/teams_list"
-        android:layout_width="wrap_content"
+        android:id="@+id/lv_teams_list"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@color/colorBlack"
         android:dividerHeight="1dp"
         android:footerDividersEnabled="false" />
 
