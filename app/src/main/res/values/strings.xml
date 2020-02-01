@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">pit-collection-2020</string>
+    <string-array name="drivetrain_array">
+        <item>Tank</item>
+        <item>Mecanum</item>
+        <item>Swerve</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="drivetrain_motor_type_array">
+        <item>Minicim</item>
+        <item>Cim</item>
+        <item>Neo</item>
+        <item>Falcon</item>
+    </string-array>
+    <string name="motor_number"># of Motors</string>
+    <string name="ground_intake">Can Ground Intake</string>
+    <string name="no_ground_intake">Can NOT Ground Intake</string>
+    <string name="cross_trench">Can Cross Trench</string>
+    <string name="no_cross_trench">Can NOT Cross Trench</string>
+    <string name="team_number">1678</string>
 </resources>

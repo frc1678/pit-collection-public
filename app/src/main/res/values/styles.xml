@@ -17,4 +17,22 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="tb_collection">
+        <item name="android:background">@drawable/tb_collection_state</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">15dp</item>
+    </style>
+
+    <style name="btn_collection">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>
