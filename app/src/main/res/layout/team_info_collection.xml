@@ -68,6 +68,7 @@
 
         <Button
             style="@style/btn_collection"
+            android:id="@+id/btn_save_button"
             android:text="Save"
             android:layout_margin="@dimen/very_small"/>
 

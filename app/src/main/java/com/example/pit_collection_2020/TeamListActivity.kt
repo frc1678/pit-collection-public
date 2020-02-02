@@ -15,7 +15,7 @@ class TeamListActivity : AppCompatActivity() {
 
         val teamsList = csvFileRead("team_list.csv", false)[0].trim().split(" ")
         lv_teams_list.adapter = ArrayAdapter<String>(
-            this, R.layout.team_cell, R.id.team_number, teamsList
+        this, R.layout.team_cell, R.id.team_number, teamsList
         )
 
         lv_teams_list.setOnItemClickListener { parent, view, position, id ->
