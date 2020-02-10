@@ -20,7 +20,8 @@ import android.Manifest.permission
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
-
+import android.app.AlertDialog
+import android.content.Context
 
 
 /* Function to read a CSV file. Returns a list of strings
@@ -29,41 +30,46 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
  absolute path: context.getExternalFilesDir(null)!!.absolutePath
  */
 
-fun csvFileRead(file: String, skipHeader: Boolean): MutableList<String> {
-    val csvFile = File( "/storage/emulated/0/${Environment.DIRECTORY_DOWNLOADS}/$file")
+fun csvFileRead(file: String, skipHeader: Boolean, context: Context): MutableList<String> {
+    val csvFile = File("/storage/emulated/0/${Environment.DIRECTORY_DOWNLOADS}/$file")
     val csvFileContents: MutableList<String> = ArrayList()
-    val csvReader = CSVReader(FileReader(csvFile))
+    if (csvFile.exists()) {
+        val csvReader = CSVReader(FileReader(csvFile))
 
-    var currentLine: Array<String>? = csvReader.readNext()
+        var currentLine: Array<String>? = csvReader.readNext()
 
-    lateinit var currentMutableLine: String
+        lateinit var currentMutableLine: String
 
-    /*If the file contains a header that is not needed when collecting data,
-    this statement will skip the first line of the file (the supposed header).
-     */
+        /*If the file contains a header that is not needed when collecting data,
+        this statement will skip the first line of the file (the supposed header).
+         */
 
-    if (skipHeader) {
-        csvReader.readNext()
-    }
 
-    while (currentLine != null) {
-        //Resets the current line's value for every new line as the while loop proceeds.
-        currentMutableLine = ""
-
-        for (lineContents in currentLine) {
-            currentMutableLine += " $lineContents"
+        if (skipHeader) {
+            csvReader.readNext()
         }
 
-        //Adds the current line's data to the list of the CSV file's contents (csvFileContents).
-        csvFileContents.add(currentMutableLine)
-        currentLine = csvReader.readNext()
-    }
+        while (currentLine != null) {
+            //Resets the current line's value for every new line as the while loop proceeds.
+            currentMutableLine = ""
 
-    for (x in csvFileContents) {
-        Log.i("MATCHSCHEDULE", x)
-    }
+            for (lineContents in currentLine) {
+                currentMutableLine += " $lineContents"
+            }
 
-    csvReader.close()
+            //Adds the current line's data to the list of the CSV file's contents (csvFileContents).
+            csvFileContents.add(currentMutableLine)
+            currentLine = csvReader.readNext()
+        }
+
+        for (x in csvFileContents) {
+            Log.i("MATCHSCHEDULE", x)
+        }
+
+        csvReader.close()
+    } else {
+        AlertDialog.Builder(context).setMessage("There is no teams list CSV file on this device").show()
+    }
     return csvFileContents
 }
 
