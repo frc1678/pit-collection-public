@@ -21,11 +21,13 @@
 
         <ToggleButton
             style="@style/tb_collection"
+            android:id="@+id/tb_can_cross_trench"
             android:textOn="@string/cross_trench"
             android:textOff="@string/no_cross_trench" />
 
         <ToggleButton
             style="@style/tb_collection"
+            android:id="@+id/tb_can_ground_intake"
             android:textOn="@string/ground_intake"
             android:textOff="@string/no_ground_intake"/>
 
@@ -61,6 +63,7 @@
 
         <EditText
             style="@style/btn_collection"
+            android:id="@+id/et_number_of_motors"
             android:hint="@string/motor_number"
             android:inputType="number"
             android:gravity="center"
