@@ -57,13 +57,27 @@ class CollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     fun saveButton() {
         btn_save_button.setOnClickListener {
             // If number of motors editText is empty, show Snackbar as a reminder
-            if (et_number_of_motors.text.isEmpty()){
+            if (et_number_of_motors.text.isEmpty()) {
                 val numberOfMotorSnack = Snackbar.make(
                     it,
-                    "Please Enter Number of Drivetrain Motors",
+                    "Please Enter Number Of Drivetrain Motors",
                     Snackbar.LENGTH_SHORT
                 )
                 numberOfMotorSnack.show()
+            } else if (spin_drivetrain.getSelectedItem().toString() == "Drivetrain") {
+                val drivetrainSnack = Snackbar.make(
+                    it,
+                    "Please Define A Drivetrain",
+                    Snackbar.LENGTH_SHORT
+                )
+                drivetrainSnack.show()
+            } else if (spin_drivetrain_motor_type.getSelectedItem().toString() == "Drivetrain Motor Type") {
+                val drivetrainMotorTypeSnack = Snackbar.make(
+                    it,
+                    "Please Define A Drivetrain Motor Type",
+                    Snackbar.LENGTH_SHORT
+                )
+                drivetrainMotorTypeSnack.show()
             } else {
                 crossTrench = tb_can_cross_trench.isChecked
                 numberOfDriveMotors = parseInt(et_number_of_motors.text.toString())

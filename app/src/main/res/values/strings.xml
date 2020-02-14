@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">pit-collection-2020</string>
     <string-array name="drivetrain_array">
+        <item>Drivetrain</item>
         <item>Tank</item>
         <item>Mecanum</item>
         <item>Swerve</item>
         <item>Other</item>
     </string-array>
     <string-array name="drivetrain_motor_type_array">
+        <item>Drivetrain Motor Type</item>
         <item>Minicim</item>
         <item>Cim</item>
         <item>Neo</item>
