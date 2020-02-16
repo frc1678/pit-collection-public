@@ -18,13 +18,13 @@ class TeamListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.team_list)
-        requestWriteExternalStorage(this, this)
-        requestReadExternalStorage(this, this)
+
 
     }
 
     override fun onResume() {
         super.onResume()
+        requestStoragePermissions(this, this)
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             == PackageManager.PERMISSION_GRANTED) {
             if (csvFileRead("team_list.csv", false, this) != ArrayList<String>()) {
