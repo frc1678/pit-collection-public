@@ -18,6 +18,7 @@ import java.io.File
 import java.util.concurrent.Executors
 
 class CameraActivity: AppCompatActivity(), LifecycleOwner {
+    var pictureNumber = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera)
@@ -75,6 +76,10 @@ class CameraActivity: AppCompatActivity(), LifecycleOwner {
         findViewById<ImageButton>(R.id.capture_button).setOnClickListener {
             var pictureType = picture_type.getSelectedItem().toString().toLowerCase()
             var fileName = "${teamNum}_${formatPictureType(pictureType)}"
+            if(pictureType == "mechanism"){
+                pictureNumber++
+                fileName = "${fileName}_${pictureNumber}"
+            }
             val file = File("/storage/emulated/0/${Environment.DIRECTORY_DOWNLOADS}/",
                 "$fileName.jpg")
 
