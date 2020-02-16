@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
@@ -38,6 +39,12 @@
             android:name=".SEALsCollectionActivity"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name=".CameraActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
 
     </application>
 </manifest>

@@ -1,10 +1,10 @@
 package com.example.pit_collection_2020
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.team_info_collection.*
@@ -28,29 +28,26 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         setContentView(R.layout.team_info_collection)
 
         //Populate spinner with arrays from strings.xml
-        createSpinner(R.id.spin_drivetrain, R.array.drivetrain_array)
-        createSpinner(R.id.spin_drivetrain_motor_type, R.array.drivetrain_motor_type_array)
-        teamNum = parseInt(getIntent().getStringExtra("teamNumber").toString())
+        createSpinner(spin_drivetrain, R.array.drivetrain_array, this)
+        createSpinner(spin_drivetrain_motor_type, R.array.drivetrain_motor_type_array, this)
+        val teamNum = parseInt(getIntent().getStringExtra("teamNumber").toString())
         tv_team_number.setText("$teamNum")
 
+        cameraButton("$teamNum")
         saveButton()
-    }
-
-    //Function to create and populate a spinner
-    private fun createSpinner(spinner: Int, array: Int) {
-        val spinner: Spinner = findViewById(spinner)
-        spinner.onItemSelectedListener = this
-
-        ArrayAdapter.createFromResource(
-            this, array, android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
-        }
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
         parent.getItemAtPosition(pos)
+    }
+
+    fun cameraButton(teamNum:String) {
+        btn_camera.setOnClickListener{
+            val intent = Intent(this, CameraActivity::class.java)
+            intent.putExtra("teamNumber", teamNum)
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
+                btn_camera, "proceed_button").toBundle())
+        }
     }
 
     //Saves data into a JSON file

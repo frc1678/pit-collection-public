@@ -17,7 +17,8 @@ class TeamListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.team_list)
-
+        requestStoragePermissions(this, this)
+        requestCamera(this, this)
 
     }
 

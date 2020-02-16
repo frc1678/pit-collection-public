@@ -16,6 +16,11 @@
         <item>Neo</item>
         <item>Falcon</item>
     </string-array>
+    <string-array name="picture_types">
+        <item>Full Robot</item>
+        <item>Drivetrain</item>
+        <item>Mechanism</item>
+    </string-array>
     <string name="motor_number"># of Motors</string>
     <string name="ground_intake">Can Ground Intake</string>
     <string name="no_ground_intake">Can NOT Ground Intake</string>
