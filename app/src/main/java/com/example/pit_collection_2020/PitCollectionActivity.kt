@@ -12,7 +12,7 @@ import schemaRead
 import java.lang.Integer.parseInt
 
 //Create spinners (drivetrain and motor type).
-class CollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     var teamNum: Int? = null
     var crossTrench: Boolean? = null
     var drivetrain: String? = null
@@ -101,7 +101,7 @@ class CollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 }
 
                 hasGroundIntake = tb_can_ground_intake.isChecked
-                //TODO Move below code to CollectionActivity and link to save button
+                //TODO Move below code to PitCollectionActivity and link to save button
 
                 // Save variable information as a pitData class.
                 var information = PitData(

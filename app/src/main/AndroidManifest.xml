@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".TeamListActivity"
+            android:name=".ModeSelectionActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,17 @@
         </activity>
 
         <activity
-            android:name=".CollectionActivity"
+            android:name=".TeamListActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".PitCollectionActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".SEALsCollectionActivity"
             android:screenOrientation="portrait">
         </activity>
 

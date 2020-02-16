@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">pit-collection-2020</string>
+    <string name="pit_collection_mode">Objective Pit Collection</string>
+    <string name="seals_collection_mode">Subjective Pit Collection (SEALs)</string>
     <string-array name="drivetrain_array">
         <item>Drivetrain</item>
         <item>Tank</item>

@@ -4,13 +4,12 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import kotlinx.android.synthetic.main.team_list.*
 
-//Reads the csv file, populates a listView, and starts CollectionActivity.
+//Reads the csv file, populates a listView, and starts PitCollectionActivity.
 class TeamListActivity : AppCompatActivity() {
     var teamsList: List<String> = emptyList()
 
@@ -24,7 +23,6 @@ class TeamListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        requestStoragePermissions(this, this)
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             == PackageManager.PERMISSION_GRANTED) {
             if (csvFileRead("team_list.csv", false, this) != ArrayList<String>()) {
@@ -37,14 +35,18 @@ class TeamListActivity : AppCompatActivity() {
             lv_teams_list.setOnItemClickListener { parent, view, position, id ->
                 if (teamsList.isNotEmpty()) {
                     val element = teamsList[position]
-                    val intent = Intent(this, CollectionActivity::class.java)
+                    val intent: Intent
+                    if (retrieveFromStorage(this, "mode_selection") == Constants.MODE_SELECTION.PIT.toString()) {
+                        intent = Intent(this, PitCollectionActivity::class.java)
+                    }
+                    else {
+                        intent = Intent(this, SEALsCollectionActivity::class.java)
+                    }
                     intent.putExtra("teamNumber", element)
                     startActivity(intent)
                 }
             }
         }
-
-
     }
 }
 
