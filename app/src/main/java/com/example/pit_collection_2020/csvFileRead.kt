@@ -14,12 +14,6 @@ import android.util.Log
 import com.opencsv.*
 import java.io.File
 import java.io.FileReader
-import androidx.core.app.ActivityCompat
-import android.content.pm.PackageManager
-import android.Manifest.permission
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import android.app.Activity
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.app.AlertDialog
 import android.content.Context
 

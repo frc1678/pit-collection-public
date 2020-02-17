@@ -15,7 +15,6 @@ class TeamListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.team_list)
         requestStoragePermissions(this, this)
         requestCamera(this, this)
@@ -44,6 +43,7 @@ class TeamListActivity : AppCompatActivity() {
                         intent = Intent(this, SEALsCollectionActivity::class.java)
                     }
                     intent.putExtra("teamNumber", element)
+
                     startActivity(intent)
                 }
             }

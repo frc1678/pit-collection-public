@@ -1,10 +1,11 @@
 package com.example.pit_collection_2020
 
-import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.zetcode.jsonFileRead
@@ -14,7 +15,7 @@ import java.io.File
 import java.lang.Integer.parseInt
 
 //Create spinners (drivetrain and motor type).
-class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class CollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     var teamNum: Int? = null
     var crossTrench: Boolean? = null
     var drivetrain: String? = null
@@ -24,70 +25,59 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
     var indexNumDrivetrain: Int? = null
     var indexNumMotor: Int? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.team_info_collection)
 
         //Populate spinner with arrays from strings.xml
-        createSpinner(spin_drivetrain, R.array.drivetrain_array, this)
-        createSpinner(spin_drivetrain_motor_type, R.array.drivetrain_motor_type_array, this)
+        createSpinner(R.id.spin_drivetrain, R.array.drivetrain_array)
+        createSpinner(R.id.spin_drivetrain_motor_type, R.array.drivetrain_motor_type_array)
         teamNum = parseInt(getIntent().getStringExtra("teamNumber").toString())
         tv_team_number.setText("$teamNum")
+        if (File("/storage/emulated/0/Download/${teamNum}_pit.json").exists()) {
+            populateScreen()
+        }
 
-        cameraButton("$teamNum")
-        saveButton()
-        populateScreen()
+            saveButton()
+    }
+
+    // Use jsonFileRead() to show previous information from json file
+    fun populateScreen() {
+        tb_can_cross_trench.isChecked = jsonFileRead(teamNum).can_cross_trench as Boolean
+        tb_can_ground_intake.isChecked = jsonFileRead(teamNum).has_ground_intake as Boolean
+        spin_drivetrain.setSelection(jsonFileRead(teamNum).drivetrain as Int)
+        spin_drivetrain_motor_type.setSelection(jsonFileRead(teamNum).drivetrain_motor_type as Int)
+        et_number_of_motors.setText(jsonFileRead(teamNum).drivetrain_motors.toString())
+
+    }
+    //Function to create and populate a spinner
+    private fun createSpinner(spinner: Int, array: Int) {
+        val spinner: Spinner = findViewById(spinner)
+        spinner.onItemSelectedListener = this
+
+        ArrayAdapter.createFromResource(
+            this, array, android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
         parent.getItemAtPosition(pos)
     }
 
-    fun cameraButton(teamNum:String) {
-        btn_camera.setOnClickListener{
-            val intent = Intent(this, CameraActivity::class.java)
-            intent.putExtra("teamNumber", teamNum)
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
-                btn_camera, "proceed_button").toBundle())
-        }
-    }
-    fun populateScreen() {
-        if (File("/storage/emulated/0/Download/${teamNum}_pit.json").exists()) {
-            val jsonFile = jsonFileRead(teamNum)
-            tb_can_cross_trench.isChecked = jsonFile.can_cross_trench as Boolean
-            tb_can_ground_intake.isChecked = jsonFile.has_ground_intake as Boolean
-            spin_drivetrain.setSelection(jsonFile.drivetrain as Int)
-            spin_drivetrain_motor_type.setSelection(jsonFile.drivetrain_motor_type as Int)
-            et_number_of_motors.setText(jsonFile.drivetrain_motors.toString())
-        }
-    }
-
     //Saves data into a JSON file
     fun saveButton() {
         btn_save_button.setOnClickListener {
             // If number of motors editText is empty, show Snackbar as a reminder
-            if (et_number_of_motors.text.isEmpty()) {
+            if (et_number_of_motors.text.isEmpty()){
                 val numberOfMotorSnack = Snackbar.make(
                     it,
-                    "Please Enter Number Of Drivetrain Motors",
+                    "Please Enter Number of Drivetrain Motors",
                     Snackbar.LENGTH_SHORT
                 )
                 numberOfMotorSnack.show()
-            } else if (spin_drivetrain.getSelectedItem().toString() == "Drivetrain") {
-                val drivetrainSnack = Snackbar.make(
-                    it,
-                    "Please Define A Drivetrain",
-                    Snackbar.LENGTH_SHORT
-                )
-                drivetrainSnack.show()
-            } else if (spin_drivetrain_motor_type.getSelectedItem().toString() == "Drivetrain Motor Type") {
-                val drivetrainMotorTypeSnack = Snackbar.make(
-                    it,
-                    "Please Define A Drivetrain Motor Type",
-                    Snackbar.LENGTH_SHORT
-                )
-                drivetrainMotorTypeSnack.show()
             } else {
                 crossTrench = tb_can_cross_trench.isChecked
                 numberOfDriveMotors = parseInt(et_number_of_motors.text.toString())
@@ -96,9 +86,9 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
                 drivetrain = spin_drivetrain.getSelectedItem().toString().toLowerCase()
                 var schemaInfoDrivetrain = (schemaRead(this).getValue("enums").getValue("drivetrain")).toString()
                 var splitSchemaDrivetrain = schemaInfoDrivetrain.split(",")
-                for (drivetrain in splitSchemaDrivetrain) {
-                    if (drivetrain.contains(drivetrain)) {
-                        indexNumDrivetrain = splitSchemaDrivetrain.indexOf(drivetrain)
+                for (drivetrainIndex in splitSchemaDrivetrain) {
+                    if (drivetrainIndex.contains(drivetrain.toString())) {
+                        indexNumDrivetrain = splitSchemaDrivetrain.indexOf(drivetrainIndex)
                     }
                 }
                 drivetrainMotor = spin_drivetrain_motor_type.getSelectedItem().toString().toLowerCase()
@@ -111,7 +101,7 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
                 }
 
                 hasGroundIntake = tb_can_ground_intake.isChecked
-                //TODO Move below code to PitCollectionActivity and link to save button
+                //TODO Move below code to CollectionActivity and link to save button
 
                 // Save variable information as a pitData class.
                 var information = PitData(
