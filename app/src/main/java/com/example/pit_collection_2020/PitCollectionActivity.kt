@@ -94,7 +94,7 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
 
                 // Use schemaRead() function to read pit_collection_schema.yml and use indexOf() to find corresponding enum value
                 drivetrain = spin_drivetrain.getSelectedItem().toString().toLowerCase()
-                var schemaInfoDrivetrain = (schemaRead(this).getValue("enums").getValue("drivetrain")).toString()
+                var schemaInfoDrivetrain = (schemaRead(R.raw.pit_collection_schema, this).getValue("enums").getValue("drivetrain")).toString()
                 var splitSchemaDrivetrain = schemaInfoDrivetrain.split(",")
                 for (drivetrain in splitSchemaDrivetrain) {
                     if (drivetrain.contains(drivetrain)) {
@@ -102,7 +102,7 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
                     }
                 }
                 drivetrainMotor = spin_drivetrain_motor_type.getSelectedItem().toString().toLowerCase()
-                var schemaInfoMotor = (schemaRead(this).getValue("enums").getValue("drivetrain_motor_type")).toString()
+                var schemaInfoMotor = (schemaRead(R.raw.pit_collection_schema, this).getValue("enums").getValue("drivetrain_motor_type")).toString()
                 var splitSchemaMotor = schemaInfoMotor.split(",")
                 for (motor in splitSchemaMotor) {
                     if (motor.contains(drivetrainMotor.toString())) {
@@ -122,7 +122,6 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
                     numberOfDriveMotors,
                     indexNumMotor
                 )
-                convertToJson(information)
                 var jsonData = convertToJson(information)
                 var file_name = "${teamNum}_pit"
                 writeToFile(file_name, jsonData)

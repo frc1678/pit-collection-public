@@ -7,9 +7,9 @@ import org.yaml.snakeyaml.Yaml
 
 // Function to read the YAML schema file and put its contents into a dictionary.
 
-fun schemaRead(context: Context): HashMap<String, HashMap<String, Any>> {
+fun schemaRead(schemaFile: Int, context: Context): HashMap<String, HashMap<String, Any>> {
 
-    val inputStream = context.getResources().openRawResource(R.raw.pit_collection_schema)
+    val inputStream = context.getResources().openRawResource(schemaFile)
 
     val yaml = Yaml()
 
