@@ -1,6 +1,8 @@
 package com.example.pit_collection_2020
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
@@ -11,16 +13,19 @@ import kotlinx.android.synthetic.main.team_info_collection.btn_save_button
 import kotlinx.android.synthetic.main.team_info_collection.tv_team_number
 
 class SEALsCollectionActivity : AppCompatActivity() {
-    var teamNum: Int? = null
-    var climberStrapInstallationTime: Int? = null
-    lateinit var climberStrapInstallationNotes: String
+
+    var team_number: Int? = null
+    var climber_strap_installation_time: Int? = null
+    var climber_strap_installation_notes: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.seals_collection)
         sealsNotesEntered()
-        teamNum = Integer.parseInt(getIntent().getStringExtra("teamNumber").toString())
-        tv_team_number.setText("$teamNum")
+
+        team_number = Integer.parseInt(getIntent().getStringExtra("teamNumber").toString())
+        tv_team_number.setText("$team_number")
+
         saveButton()
     }
 
@@ -34,22 +39,22 @@ class SEALsCollectionActivity : AppCompatActivity() {
                 R.id.radio_zero ->
                     // Low time to install climber
                     if (checked) {
-                        climberStrapInstallationTime = 0
+                        climber_strap_installation_time = 0
                     }
                 R.id.radio_one ->
                     // Average time to install climber
                     if (checked) {
-                        climberStrapInstallationTime = 1
+                        climber_strap_installation_time = 1
                     }
                 R.id.radio_two ->
                     // High time to install climber
                     if (checked) {
-                        climberStrapInstallationTime = 2
+                        climber_strap_installation_time = 2
                     }
                 R.id.radio_three ->
                     // Impossible to install climber
                     if (checked) {
-                        climberStrapInstallationTime = 3
+                        climber_strap_installation_time = 3
                     }
             }
         }
@@ -57,7 +62,7 @@ class SEALsCollectionActivity : AppCompatActivity() {
 
     fun sealsNotesEntered() {
         seals_notes.addTextChangedListener {
-            climberStrapInstallationNotes = seals_notes.text.toString()
+            climber_strap_installation_notes = seals_notes.text.toString()
         }
     }
 
@@ -65,22 +70,26 @@ class SEALsCollectionActivity : AppCompatActivity() {
     fun saveButton() {
         btn_save_button.setOnClickListener {
             // If number of motors editText is empty, show Snackbar as a reminder
-            if (climberStrapInstallationTime == null) {
-                val climberStrapInstallationTimeSnack = Snackbar.make(
+            if (climber_strap_installation_time == null) {
+                val climber_strap_installation_time_snack = Snackbar.make(
                     it,
-                    "Please Enter A Climb Compatibility Value",
+                    "Please Enter A Climber Installation Time Value",
                     Snackbar.LENGTH_SHORT
                 )
-                climberStrapInstallationTimeSnack.show()
+                climber_strap_installation_time_snack.show()
             } else {
                 var sealsInformation = SubjectiveData(
-                    teamNum,
-                    climberStrapInstallationTime,
-                    climberStrapInstallationNotes
+                    team_number,
+                    climber_strap_installation_time,
+                    climber_strap_installation_notes
                 )
                 var jsonData = convertToJson(sealsInformation)
-                var file_name = "${teamNum}_subjective"
+                var file_name = "${team_number}_subjective"
                 writeToFile(file_name, jsonData)
+                val element = team_number
+                val intent = Intent(this, TeamListActivity::class.java)
+                intent.putExtra("team_number", element)
+                startActivity(intent)
             }
         }
     }

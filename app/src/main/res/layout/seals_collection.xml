@@ -81,7 +81,6 @@
         android:gravity="start"
         android:inputType="textMultiLine"
         android:background="@drawable/edittext_border"
-        android:layout_margin="@dimen/very_small"/>
-
-
+        android:layout_margin="@dimen/very_small"
+        android:hint="Climber installation notes"/>
 </LinearLayout>
