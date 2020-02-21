@@ -123,7 +123,7 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
                     indexNumMotor
                 )
                 var jsonData = convertToJson(information)
-                var file_name = "${teamNum}_pit"
+                var file_name = "${teamNum}_obj_pit"
                 writeToFile(file_name, jsonData)
 
                 val element = teamNum

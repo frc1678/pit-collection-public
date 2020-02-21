@@ -84,7 +84,7 @@ class SEALsCollectionActivity : AppCompatActivity() {
                     climber_strap_installation_notes
                 )
                 var jsonData = convertToJson(sealsInformation)
-                var file_name = "${team_number}_subjective"
+                var file_name = "${team_number}_subj_pit"
                 writeToFile(file_name, jsonData)
                 val element = team_number
                 val intent = Intent(this, TeamListActivity::class.java)
