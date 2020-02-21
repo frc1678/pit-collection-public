@@ -7,7 +7,7 @@ import java.io.FileReader
 import java.lang.Integer.parseInt
 
 fun jsonFileRead(teamName: Int?) : PitData{
-    val fileName = "/storage/emulated/0/Download/${teamName}_pit.json"
+    val fileName = "/storage/emulated/0/Download/${teamName}_obj_pit.json"
 
     // Make a json object called jo
     val obj = JsonParser().parse(FileReader(fileName))
