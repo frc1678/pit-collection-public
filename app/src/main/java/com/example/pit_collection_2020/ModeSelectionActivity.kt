@@ -10,7 +10,8 @@ class ModeSelectionActivity : AppCompatActivity() {
 
     private fun startTeamList() {
         putIntoStorage(this, "mode_selection", modeSelection)
-        startActivity(Intent(this, TeamListActivity::class.java))
+        val intent = Intent(this, TeamListActivity::class.java)
+        startActivity(intent)
     }
 
     private fun initButtonOnClicks() {
@@ -32,7 +33,6 @@ class ModeSelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.mode_selection)
-
         if (this.getSharedPreferences("PREFS", 0).contains("mode_selection")) {
             startTeamList()
         } else {

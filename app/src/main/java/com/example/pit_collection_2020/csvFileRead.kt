@@ -8,7 +8,6 @@
 
 package com.example.pit_collection_2020
 
-import android.Manifest
 import android.os.Environment
 import android.util.Log
 import com.opencsv.*
