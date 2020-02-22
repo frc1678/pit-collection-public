@@ -3,6 +3,7 @@ package com.example.pit_collection_2020
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
@@ -47,22 +48,27 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         parent.getItemAtPosition(pos)
     }
 
-    fun cameraButton(teamNum:String) {
-        btn_camera.setOnClickListener{
+    fun cameraButton(teamNum: String) {
+        btn_camera.setOnClickListener {
             val intent = Intent(this, CameraActivity::class.java)
             intent.putExtra("teamNumber", teamNum)
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
-                btn_camera, "proceed_button").toBundle())
+            startActivity(
+                intent, ActivityOptions.makeSceneTransitionAnimation(
+                    this,
+                    btn_camera, "proceed_button"
+                ).toBundle()
+            )
         }
     }
+
     fun populateScreen() {
         if (File("/storage/emulated/0/Download/${teamNum}_obj_pit.json").exists()) {
 
             val jsonFile = pitJsonFileRead(teamNum)
             tb_can_cross_trench.isChecked = jsonFile.can_cross_trench as Boolean
             tb_can_ground_intake.isChecked = jsonFile.has_ground_intake as Boolean
-            spin_drivetrain.setSelection(jsonFile.drivetrain as Int)
-            spin_drivetrain_motor_type.setSelection(jsonFile.drivetrain_motor_type as Int)
+            spin_drivetrain.setSelection(parseInt(jsonFile.drivetrain.toString()) + 1)
+            spin_drivetrain_motor_type.setSelection(parseInt(jsonFile.drivetrain_motor_type.toString()) + 1)
             et_number_of_motors.setText(jsonFile.drivetrain_motors.toString())
         }
     }
@@ -98,19 +104,49 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
 
                 // Use schemaRead() function to read pit_collection_schema.yml and use indexOf() to find corresponding enum value
                 drivetrain = spin_drivetrain.getSelectedItem().toString().toLowerCase()
-                var schemaInfoDrivetrain = (schemaRead(R.raw.pit_collection_schema, this).getValue("enums").getValue("drivetrain")).toString()
-                var splitSchemaDrivetrain = schemaInfoDrivetrain.split(",")
-                for (drivetrain in splitSchemaDrivetrain) {
-                    if (drivetrain.contains(drivetrain)) {
-                        indexNumDrivetrain = splitSchemaDrivetrain.indexOf(drivetrain)
+                var schemaInfoDrivetrain = (schemaRead(
+                    R.raw.pit_collection_schema,
+                    this
+                ).getValue("enums").getValue("drivetrain")).toString()
+
+                //Drive Train
+                //Todo: Hook up to enums instead of hard coding
+                when (drivetrain) {
+                    "tank" -> {
+                        indexNumDrivetrain = 0
+                    }
+                    "mecanum" -> {
+                        indexNumDrivetrain = 1
+                    }
+                    "swerve" -> {
+                        indexNumDrivetrain = 2
+                    }
+                    "other" -> {
+                        indexNumDrivetrain = 3
                     }
                 }
-                drivetrainMotor = spin_drivetrain_motor_type.getSelectedItem().toString().toLowerCase()
-                var schemaInfoMotor = (schemaRead(R.raw.pit_collection_schema, this).getValue("enums").getValue("drivetrain_motor_type")).toString()
-                var splitSchemaMotor = schemaInfoMotor.split(",")
-                for (motor in splitSchemaMotor) {
-                    if (motor.contains(drivetrainMotor.toString())) {
-                        indexNumMotor = splitSchemaMotor.indexOf(motor)
+
+                drivetrainMotor =
+                    spin_drivetrain_motor_type.getSelectedItem().toString().toLowerCase()
+                var schemaInfoMotor = (schemaRead(
+                    R.raw.pit_collection_schema,
+                    this
+                ).getValue("enums").getValue("drivetrain_motor_type")).toString()
+
+                //Drive Train Motor Type
+                //Todo: Hook up to enums instead of hard coding
+                when (drivetrainMotor) {
+                    "minicim" -> {
+                        indexNumMotor = 0
+                    }
+                    "cim" -> {
+                        indexNumMotor = 1
+                    }
+                    "neo" -> {
+                        indexNumMotor = 2
+                    }
+                    "falcon" -> {
+                        indexNumMotor = 3
                     }
                 }
 
