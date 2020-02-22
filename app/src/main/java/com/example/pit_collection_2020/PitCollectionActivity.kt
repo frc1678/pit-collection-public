@@ -56,7 +56,7 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         }
     }
     fun populateScreen() {
-        if (File("/storage/emulated/0/Download/${teamNum}__obj_pit.json").exists()) {
+        if (File("/storage/emulated/0/Download/${teamNum}_obj_pit.json").exists()) {
 
             val jsonFile = pitJsonFileRead(teamNum)
             tb_can_cross_trench.isChecked = jsonFile.can_cross_trench as Boolean

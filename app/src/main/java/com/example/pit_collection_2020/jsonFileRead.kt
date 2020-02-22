@@ -7,8 +7,8 @@ import com.google.gson.JsonParser
 import java.io.FileReader
 import java.lang.Integer.parseInt
 
-fun pitJsonFileRead(teamName: Int?) : PitData{
-    val fileName = "/storage/emulated/0/Download/${teamName}_obj_pit.json"
+fun pitJsonFileRead(teamNum: Int?) : PitData{
+    val fileName = "/storage/emulated/0/Download/${teamNum}_obj_pit.json"
 
     // Make a json object called jo
     val obj = JsonParser().parse(FileReader(fileName))
@@ -37,7 +37,7 @@ fun pitJsonFileRead(teamName: Int?) : PitData{
 
         // Create a PitData object with the information from jo
         var readInformation = PitData(
-            teamName,
+            teamNum,
             boolCrossTrench,
             parseInt(indexNumDrivetrain.toString()),
             boolHasGroundIntake,
@@ -51,8 +51,8 @@ fun pitJsonFileRead(teamName: Int?) : PitData{
     return initSpecialVariables()
 }
 
-fun subjJsonFileRead(teamName: Int?) : SubjectiveData {
-    val fileName = "/storage/emulated/0/Download/${teamName}_subj_pit.json"
+fun subjJsonFileRead(teamNum: Int?) : SubjectiveData {
+    val fileName = "/storage/emulated/0/Download/${teamNum}_subj_pit.json"
 
     // Make a json object called jo
     val obj = JsonParser().parse(FileReader(fileName))
@@ -63,7 +63,7 @@ fun subjJsonFileRead(teamName: Int?) : SubjectiveData {
     val climber_strap_installation_notes = jo.get("climber_strap_installation_notes")
 
     val readInformation = SubjectiveData(
-        teamName,
+        teamNum,
         parseInt(climber_strap_installation_time.toString()),
         climber_strap_installation_notes?.toString()
     )

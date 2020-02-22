@@ -10,8 +10,8 @@
     <string name="no_cross_trench">Can NOT Cross Trench</string>
     <string name="team_number">1678</string>
     <string name="Save">Save Button</string>
-    <string name="error_back_reset">Do you want to reset everything?</string>
-    <string name="error_back">Please long press to reset everything</string>
+    <string name="error_back_reset">Do you want to reset the collection mode?</string>
+    <string name="error_back">Please long press to reset the collection mode</string>
 
     <string-array name="drivetrain_array">
         <item>Drivetrain</item>
