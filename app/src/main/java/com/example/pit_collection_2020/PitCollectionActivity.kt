@@ -8,7 +8,7 @@ import android.view.WindowManager
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import com.zetcode.jsonFileRead
+import com.zetcode.pitJsonFileRead
 import kotlinx.android.synthetic.main.team_info_collection.*
 import schemaRead
 import java.io.File
@@ -57,7 +57,8 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
     }
     fun populateScreen() {
         if (File("/storage/emulated/0/Download/${teamNum}__obj_pit.json").exists()) {
-            val jsonFile = jsonFileRead(teamNum)
+
+            val jsonFile = pitJsonFileRead(teamNum)
             tb_can_cross_trench.isChecked = jsonFile.can_cross_trench as Boolean
             tb_can_ground_intake.isChecked = jsonFile.has_ground_intake as Boolean
             spin_drivetrain.setSelection(jsonFile.drivetrain as Int)

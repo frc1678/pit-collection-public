@@ -1,12 +1,13 @@
 package com.zetcode
 
 import com.example.pit_collection_2020.PitData
+import com.example.pit_collection_2020.SubjectiveData
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import java.io.FileReader
 import java.lang.Integer.parseInt
 
-fun jsonFileRead(teamName: Int?) : PitData{
+fun pitJsonFileRead(teamName: Int?) : PitData{
     val fileName = "/storage/emulated/0/Download/${teamName}_obj_pit.json"
 
     // Make a json object called jo
@@ -48,4 +49,24 @@ fun jsonFileRead(teamName: Int?) : PitData{
 
     }
     return initSpecialVariables()
+}
+
+fun subjJsonFileRead(teamName: Int?) : SubjectiveData {
+    val fileName = "/storage/emulated/0/Download/${teamName}_subj_pit.json"
+
+    // Make a json object called jo
+    val obj = JsonParser().parse(FileReader(fileName))
+    val jo = obj as JsonObject
+
+    // Get values from the jo json file
+    val climber_strap_installation_time = jo.get("climber_strap_installation_time")
+    val climber_strap_installation_notes = jo.get("climber_strap_installation_notes")
+
+    val readInformation = SubjectiveData(
+        teamName,
+        parseInt(climber_strap_installation_time.toString()),
+        climber_strap_installation_notes?.toString()
+    )
+
+    return readInformation
 }

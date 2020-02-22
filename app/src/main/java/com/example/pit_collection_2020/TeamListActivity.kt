@@ -21,7 +21,6 @@ class TeamListActivity : AppCompatActivity() {
         setContentView(R.layout.team_list)
         requestStoragePermissions(this, this)
         requestCamera(this, this)
-
     }
 
     // Starts the mode selection activity of the previously selected selection mode

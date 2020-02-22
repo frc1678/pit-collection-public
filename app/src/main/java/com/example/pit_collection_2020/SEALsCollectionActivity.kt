@@ -2,6 +2,7 @@ package com.example.pit_collection_2020
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -9,9 +10,12 @@ import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.snackbar.Snackbar
+import com.zetcode.subjJsonFileRead
 import kotlinx.android.synthetic.main.seals_collection.*
+import kotlinx.android.synthetic.main.team_info_collection.*
 import kotlinx.android.synthetic.main.team_info_collection.btn_save_button
 import kotlinx.android.synthetic.main.team_info_collection.tv_team_number
+import java.io.File
 
 class SEALsCollectionActivity : AppCompatActivity() {
 
@@ -31,6 +35,32 @@ class SEALsCollectionActivity : AppCompatActivity() {
         tv_team_number.setText("$team_number")
 
         saveButton()
+        populateScreen()
+    }
+
+    fun populateScreen() {
+        if (File("/storage/emulated/0/Download/${team_number}_subj_pit.json").exists()) {
+            val jsonFile = subjJsonFileRead(team_number)
+            when (jsonFile.climber_strap_installation_time) {
+                0 -> {
+                    radio_zero.isChecked = true
+                    climber_strap_installation_time = 0
+                }
+                1 -> {
+                    radio_one.isChecked = true
+                    climber_strap_installation_time = 1
+                }
+                2 -> {
+                    radio_two.isChecked = true
+                    climber_strap_installation_time = 2
+                }
+                3 -> {
+                    radio_three.isChecked = true
+                    climber_strap_installation_time = 3
+                }
+            }
+            seals_notes.setText(jsonFile.climber_strap_installation_notes?.replace("\"", ""))
+        }
     }
 
     fun onRadioButtonClicked(view: View) {
