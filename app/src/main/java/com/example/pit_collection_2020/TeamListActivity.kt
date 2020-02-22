@@ -65,12 +65,14 @@ class TeamListActivity : AppCompatActivity() {
                     val intent: Intent
                     if (retrieveFromStorage(this, "mode_selection") == Constants.MODE_SELECTION.PIT.toString()) {
                         intent = Intent(this, PitCollectionActivity::class.java)
+                        intent.putExtra("teamNumber", element)
+                        startActivity(intent)
                     }
-                    else {
+                    else if (retrieveFromStorage(this, "mode_selection") == Constants.MODE_SELECTION.SEALS.toString()) {
                         intent = Intent(this, SEALsCollectionActivity::class.java)
+                        intent.putExtra("teamNumber", element)
+                        startActivity(intent)
                     }
-                    intent.putExtra("teamNumber", element)
-                    startActivity(intent)
                 }
             }
         }

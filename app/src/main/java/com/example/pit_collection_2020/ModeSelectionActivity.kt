@@ -9,7 +9,6 @@ class ModeSelectionActivity : AppCompatActivity() {
     var modeSelection: Constants.MODE_SELECTION = Constants.MODE_SELECTION.NONE
 
     private fun startTeamList() {
-        putIntoStorage(this, "mode_selection", modeSelection)
         val intent = Intent(this, TeamListActivity::class.java)
         startActivity(intent)
     }
@@ -17,10 +16,12 @@ class ModeSelectionActivity : AppCompatActivity() {
     private fun initButtonOnClicks() {
         btn_select_mode_pit.setOnClickListener { view ->
             modeSelection = Constants.MODE_SELECTION.PIT
+            putIntoStorage(this, "mode_selection", modeSelection)
             startTeamList()
         }
         btn_select_mode_seals.setOnClickListener { view ->
             modeSelection = Constants.MODE_SELECTION.SEALS
+            putIntoStorage(this, "mode_selection", modeSelection)
             startTeamList()
         }
     }
