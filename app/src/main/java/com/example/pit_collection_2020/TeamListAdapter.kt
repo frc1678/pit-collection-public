@@ -22,7 +22,9 @@ class TeamListAdapter(
                 context,
                 "mode_selection"
             ) == Constants.MODE_SELECTION.PIT.toString()) and (File("/storage/emulated/0/Download/${teamsList[position]}_obj_pit.json").exists())
-                    ) or ((retrieveFromStorage(
+                    and (File("/storage/emulated/0/Download/${teamsList[position]}_drivetrain.jpg").exists()) and (File(
+                "/storage/emulated/0/Download/${teamsList[position]}_full_robot.jpg"
+            ).exists())) or ((retrieveFromStorage(
                 context,
                 "mode_selection"
             ) == Constants.MODE_SELECTION.SEALS.toString()) and (File("/storage/emulated/0/Download/${teamsList[position]}_subj_pit.json").exists())
