@@ -36,7 +36,8 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         //Populate spinner with arrays from strings.xml
         createSpinner(spin_drivetrain, R.array.drivetrain_array, this)
         createSpinner(spin_drivetrain_motor_type, R.array.drivetrain_motor_type_array, this)
-        teamNum = parseInt(getIntent().getStringExtra("teamNumber").toString())
+
+        val teamNum = parseInt(intent.getStringExtra("teamNumber")!!.toString())
         tv_team_number.setText("$teamNum")
 
         cameraButton("$teamNum")
@@ -176,5 +177,9 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
 
     override fun onNothingSelected(parent: AdapterView<*>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+    override fun onBackPressed() {
+        val intent = Intent(this, TeamListActivity::class.java)
+        startActivity(intent)
     }
 }

@@ -1,5 +1,7 @@
 package com.example.pit_collection_2020
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.util.Size
 import android.graphics.Matrix
 import android.os.Bundle
@@ -13,19 +15,24 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.lifecycle.LifecycleOwner
-import kotlinx.android.synthetic.main.camera.*
+import kotlinx.android.synthetic.main.camera_confirmation.*
+import kotlinx.android.synthetic.main.camera_preview.*
 import java.io.File
 import java.util.concurrent.Executors
 
 class CameraActivity: AppCompatActivity(), LifecycleOwner {
+    lateinit var teamNum : String
     var pictureNumber = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.camera)
+        setContentView(R.layout.camera_preview)
 
         createSpinner(picture_type, R.array.picture_types,this)
 
-        val teamNum = Integer.parseInt(getIntent().getStringExtra("teamNumber").toString())
+        teamNum = intent.getStringExtra("teamNumber")!!.toString()
+
+        finishButton(teamNum)
 
         viewFinder = findViewById(R.id.view_finder)
         viewFinder.post { startCamera("$teamNum") }
@@ -34,6 +41,23 @@ class CameraActivity: AppCompatActivity(), LifecycleOwner {
         viewFinder.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             updateTransform()
         }
+    }
+
+    fun finishButton(teamNum:String){
+        btn_return.setOnClickListener{
+            val intent = Intent(this, PitCollectionActivity::class.java)
+            intent.putExtra("teamNumber", "$teamNum"
+            )
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
+                btn_return, "proceed_button").toBundle())
+        }
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, PitCollectionActivity::class.java)
+        intent.putExtra("teamNumber", "$teamNum"
+        )
+        startActivity(intent)
     }
 
     private val executor = Executors.newSingleThreadExecutor()
@@ -73,7 +97,7 @@ class CameraActivity: AppCompatActivity(), LifecycleOwner {
         // Build the image capture use case and attach button click listener
         val imageCapture = ImageCapture(imageCaptureConfig)
 
-        findViewById<ImageButton>(R.id.capture_button).setOnClickListener {
+        capture_button.setOnClickListener {
             var pictureType = picture_type.getSelectedItem().toString().toLowerCase()
             var fileName = "${teamNum}_${formatPictureType(pictureType)}"
             if(pictureType == "mechanism"){
@@ -97,11 +121,15 @@ class CameraActivity: AppCompatActivity(), LifecycleOwner {
                         }
                     }
                     override fun onImageSaved(file: File) {
-                        val msg = "Photo capture succeeded: ${file.absolutePath}"
-                        Log.d("CameraXApp", msg)
-                        viewFinder.post {
-                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                        }
+                        this@CameraActivity.runOnUiThread( object : Runnable {
+                            override fun run() {
+                                val intent = Intent(this@CameraActivity, PictureConfirmation::class.java)
+                                intent.putExtra("fileName", file.toString())
+                                intent.putExtra("teamNumber", teamNum)
+                                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this@CameraActivity,
+                                    capture_button, "proceed_button").toBundle())
+                            }
+                        })
                     }
                 })
         }

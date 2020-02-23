@@ -4,7 +4,16 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <Button
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:id="@+id/btn_return"
+        android:layout_weight="1"
+        android:background="@color/blue"
+        android:textSize="30dp"
+        android:text="Back to Collection"
+        android:textColor="@color/dark_gray"
+        />
     <TextureView
         android:id="@+id/view_finder"
         android:layout_width="match_parent"
@@ -20,9 +29,10 @@
             android:id="@+id/capture_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/ic_menu_camera"
+            android:src="@drawable/ic_action_name"
             android:layout_weight="1"
             android:layout_margin="5dp"
+            android:scaleType="fitCenter"
             />
         <Spinner
             android:id="@+id/picture_type"
@@ -30,6 +40,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:background="@color/light_gray"
+            android:textAlignment="center"
             />
     </LinearLayout>
 </LinearLayout>
