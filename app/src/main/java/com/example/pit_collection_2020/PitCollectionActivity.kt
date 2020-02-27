@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.zetcode.pitJsonFileRead
 import kotlinx.android.synthetic.main.team_info_collection.*
-import schemaRead
 import java.io.File
 import java.lang.Integer.parseInt
+import java.util.*
 
 //Create spinners (drivetrain and motor type).
 class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -37,7 +37,7 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         createSpinner(spin_drivetrain, R.array.drivetrain_array, this)
         createSpinner(spin_drivetrain_motor_type, R.array.drivetrain_motor_type_array, this)
 
-        val teamNum = parseInt(intent.getStringExtra("teamNumber")!!.toString())
+        teamNum = parseInt(intent.getStringExtra("teamNumber")!!.toString())
         tv_team_number.setText("$teamNum")
 
         cameraButton("$teamNum")
@@ -49,10 +49,61 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         parent.getItemAtPosition(pos)
     }
 
-    fun cameraButton(teamNum: String) {
+    private fun assignIndexNums() {
+        // Use schemaRead() function to read pit_collection_schema.yml and use indexOf() to find corresponding enum value
+        drivetrain = spin_drivetrain.selectedItem.toString().toLowerCase(Locale.US)
+
+        indexNumDrivetrain = when (drivetrain) {
+            "tank" -> {
+                0
+            }
+            "mecanum" -> {
+                1
+            }
+            "swerve" -> {
+                2
+            }
+            "other" -> {
+                3
+            }
+            else -> -1
+        }
+
+        drivetrainMotor =
+            spin_drivetrain_motor_type.selectedItem.toString().toLowerCase(Locale.US)
+
+        //Drive Train Motor Type
+        //Todo: Hook up to enums instead of hard coding
+        indexNumMotor = when (drivetrainMotor) {
+            "minicim" -> {
+                0
+            }
+            "cim" -> {
+                1
+            }
+            "neo" -> {
+                2
+            }
+            "falcon" -> {
+                3
+            }
+            else -> -1
+        }
+    }
+
+    private fun cameraButton(teamNum: String) {
         btn_camera.setOnClickListener {
+            assignIndexNums()
+
             val intent = Intent(this, CameraActivity::class.java)
             intent.putExtra("teamNumber", teamNum)
+                .putExtra("can_cross_trench", tb_can_cross_trench.isChecked)
+                .putExtra("has_ground_intake", tb_can_ground_intake.isChecked)
+                .putExtra("drivetrain_pos", parseInt(indexNumDrivetrain.toString()))
+                .putExtra("drivetrain_motor_pos", parseInt(indexNumMotor.toString()))
+            if (et_number_of_motors.text.isNotEmpty()) {
+                intent.putExtra("num_motors", parseInt(et_number_of_motors.text.toString()))
+            }
             startActivity(
                 intent, ActivityOptions.makeSceneTransitionAnimation(
                     this,
@@ -62,9 +113,21 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         }
     }
 
-    fun populateScreen() {
-        if (File("/storage/emulated/0/Download/${teamNum}_obj_pit.json").exists()) {
-
+    private fun populateScreen() {
+        if (intent.getBooleanExtra("after_camera", false)) {
+            tb_can_cross_trench.isChecked = intent.getBooleanExtra("can_cross_trench", false)
+            tb_can_ground_intake.isChecked = intent.getBooleanExtra("has_ground_intake", false)
+            spin_drivetrain.setSelection(intent.getIntExtra("drivetrain_pos", -1) + 1)
+            spin_drivetrain_motor_type.setSelection(
+                intent.getIntExtra(
+                    "drivetrain_motor_pos",
+                    -1
+                ) + 1
+            )
+            if (intent.getIntExtra("num_motors", 0) != 0) {
+                et_number_of_motors.setText(intent.getIntExtra("num_motors", 0).toString())
+            }
+        } else if (File("/storage/emulated/0/Download/${teamNum}_obj_pit.json").exists()) {
             val jsonFile = pitJsonFileRead(teamNum)
             tb_can_cross_trench.isChecked = jsonFile.can_cross_trench as Boolean
             tb_can_ground_intake.isChecked = jsonFile.has_ground_intake as Boolean
@@ -75,102 +138,60 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
     }
 
     //Saves data into a JSON file
-    fun saveButton() {
+    private fun saveButton() {
         btn_save_button.setOnClickListener {
             // If number of motors editText is empty, show Snackbar as a reminder
-            if (et_number_of_motors.text.isEmpty()) {
-                val numberOfMotorSnack = Snackbar.make(
-                    it,
-                    "Please Enter Number Of Drivetrain Motors",
-                    Snackbar.LENGTH_SHORT
-                )
-                numberOfMotorSnack.show()
-            } else if (spin_drivetrain.getSelectedItem().toString() == "Drivetrain") {
-                val drivetrainSnack = Snackbar.make(
-                    it,
-                    "Please Define A Drivetrain",
-                    Snackbar.LENGTH_SHORT
-                )
-                drivetrainSnack.show()
-            } else if (spin_drivetrain_motor_type.getSelectedItem().toString() == "Drivetrain Motor Type") {
-                val drivetrainMotorTypeSnack = Snackbar.make(
-                    it,
-                    "Please Define A Drivetrain Motor Type",
-                    Snackbar.LENGTH_SHORT
-                )
-                drivetrainMotorTypeSnack.show()
-            } else {
-                crossTrench = tb_can_cross_trench.isChecked
-                numberOfDriveMotors = parseInt(et_number_of_motors.text.toString())
-
-                // Use schemaRead() function to read pit_collection_schema.yml and use indexOf() to find corresponding enum value
-                drivetrain = spin_drivetrain.getSelectedItem().toString().toLowerCase()
-                var schemaInfoDrivetrain = (schemaRead(
-                    R.raw.pit_collection_schema,
-                    this
-                ).getValue("enums").getValue("drivetrain")).toString()
-
-                //Drive Train
-                //Todo: Hook up to enums instead of hard coding
-                when (drivetrain) {
-                    "tank" -> {
-                        indexNumDrivetrain = 0
-                    }
-                    "mecanum" -> {
-                        indexNumDrivetrain = 1
-                    }
-                    "swerve" -> {
-                        indexNumDrivetrain = 2
-                    }
-                    "other" -> {
-                        indexNumDrivetrain = 3
-                    }
+            when {
+                et_number_of_motors.text.isEmpty() -> {
+                    val numberOfMotorSnack = Snackbar.make(
+                        it,
+                        "Please Enter Number Of Drivetrain Motors",
+                        Snackbar.LENGTH_SHORT
+                    )
+                    numberOfMotorSnack.show()
                 }
-
-                drivetrainMotor =
-                    spin_drivetrain_motor_type.getSelectedItem().toString().toLowerCase()
-                var schemaInfoMotor = (schemaRead(
-                    R.raw.pit_collection_schema,
-                    this
-                ).getValue("enums").getValue("drivetrain_motor_type")).toString()
-
-                //Drive Train Motor Type
-                //Todo: Hook up to enums instead of hard coding
-                when (drivetrainMotor) {
-                    "minicim" -> {
-                        indexNumMotor = 0
-                    }
-                    "cim" -> {
-                        indexNumMotor = 1
-                    }
-                    "neo" -> {
-                        indexNumMotor = 2
-                    }
-                    "falcon" -> {
-                        indexNumMotor = 3
-                    }
+                spin_drivetrain.getSelectedItem().toString() == "Drivetrain" -> {
+                    val drivetrainSnack = Snackbar.make(
+                        it,
+                        "Please Define A Drivetrain",
+                        Snackbar.LENGTH_SHORT
+                    )
+                    drivetrainSnack.show()
                 }
+                spin_drivetrain_motor_type.getSelectedItem().toString() == "Drivetrain Motor Type" -> {
+                    val drivetrainMotorTypeSnack = Snackbar.make(
+                        it,
+                        "Please Define A Drivetrain Motor Type",
+                        Snackbar.LENGTH_SHORT
+                    )
+                    drivetrainMotorTypeSnack.show()
+                }
+                else -> {
+                    crossTrench = tb_can_cross_trench.isChecked
+                    numberOfDriveMotors = parseInt(et_number_of_motors.text.toString())
+                    hasGroundIntake = tb_can_ground_intake.isChecked
+                    //TODO Move below code to PitCollectionActivity and link to save button
 
-                hasGroundIntake = tb_can_ground_intake.isChecked
-                //TODO Move below code to PitCollectionActivity and link to save button
+                    assignIndexNums()
 
-                // Save variable information as a pitData class.
-                var information = PitData(
-                    teamNum,
-                    crossTrench,
-                    indexNumDrivetrain,
-                    hasGroundIntake,
-                    numberOfDriveMotors,
-                    indexNumMotor
-                )
-                var jsonData = convertToJson(information)
-                var file_name = "${teamNum}_obj_pit"
-                writeToFile(file_name, jsonData)
+                    // Save variable information as a pitData class.
+                    val information = PitData(
+                        teamNum,
+                        crossTrench,
+                        indexNumDrivetrain,
+                        hasGroundIntake,
+                        numberOfDriveMotors,
+                        indexNumMotor
+                    )
+                    val jsonData = convertToJson(information)
+                    val fileName = "${teamNum}_obj_pit"
+                    writeToFile(fileName, jsonData)
 
-                val element = teamNum
-                val intent = Intent(this, TeamListActivity::class.java)
-                intent.putExtra("teamNumber", element)
-                startActivity(intent)
+                    val element = teamNum
+                    val intent = Intent(this, TeamListActivity::class.java)
+                    intent.putExtra("teamNumber", element)
+                    startActivity(intent)
+                }
             }
         }
     }
@@ -178,6 +199,7 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
     override fun onNothingSelected(parent: AdapterView<*>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
     override fun onBackPressed() {
         val intent = Intent(this, TeamListActivity::class.java)
         startActivity(intent)

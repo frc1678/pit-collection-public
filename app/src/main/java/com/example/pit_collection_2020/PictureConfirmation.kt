@@ -7,56 +7,67 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.camera_confirmation.*
-import kotlinx.android.synthetic.main.camera_preview.*
 import java.io.File
 
 class PictureConfirmation : AppCompatActivity() {
-    private var fileName : String? = null
-    private var teamNum : Int? = null
+    private var fileName: String? = null
+    private var teamNum: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_confirmation)
 
-        teamNum = Integer.parseInt(intent.getStringExtra("teamNumber").toString())
-        fileName = intent.getStringExtra("fileName")
+        teamNum = intent?.getStringExtra("teamNumber").toString()
+        fileName = intent?.getStringExtra("fileName").toString()
 
-        tv_team_number_confirm.setText("$teamNum")
+        tv_team_number_confirm.text = teamNum
 
         displayImage(fileName!!)
-        setOnClickListeners("$teamNum","$fileName")
+        setOnClickListeners(teamNum.toString(), fileName.toString())
     }
 
-    fun displayImage(fileName:String){
+    private fun displayImage(fileName: String) {
         val imgFile = File(fileName)
 
         if (imgFile.exists()) {
-            var myBitmap: Bitmap = BitmapFactory.decodeFile(fileName)
+            val myBitmap: Bitmap = BitmapFactory.decodeFile(fileName)
             iv_picture_confirm.setImageBitmap(myBitmap)
 
         }
     }
-    override fun onBackPressed() {
-        val intent = Intent(this, PitCollectionActivity::class.java)
-        intent.putExtra("teamNumber", "$teamNum"
-        )
-        startActivity(intent)
+
+    override fun onBackPressed() {}
+
+    private fun putExtras(): Intent {
+        val intentToPit = Intent(this, CameraActivity::class.java)
+        intentToPit.putExtra(
+            "teamNumber", teamNum
+        ).putExtra("can_cross_trench", intent.getBooleanExtra("can_cross_trench", false))
+            .putExtra("has_ground_intake", intent.getBooleanExtra("has_ground_intake", false))
+            .putExtra("drivetrain_pos", intent.getIntExtra("drivetrain_pos", -1))
+            .putExtra("drivetrain_motor_pos", intent.getIntExtra("drivetrain_motor_pos", -1))
+            .putExtra("num_motors", intent.getIntExtra("num_motors", 0))
+            .putExtra("after_camera", true)
+        return intentToPit
     }
 
-
-    fun setOnClickListeners(teamNum:String, fileName:String){
-        delete.setOnClickListener{
+    private fun setOnClickListeners(teamNum: String, fileName: String) {
+        delete.setOnClickListener {
             File(fileName).delete()
-            val intent = Intent(this, CameraActivity::class.java)
-            intent.putExtra("teamNumber", teamNum)
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
-                delete, "proceed_button").toBundle())
+            startActivity(
+                putExtras(), ActivityOptions.makeSceneTransitionAnimation(
+                    this,
+                    delete, "proceed_button"
+                ).toBundle()
+            )
         }
-        btn_continue.setOnClickListener(){
-            val intent = Intent(this, CameraActivity::class.java)
-            intent.putExtra("teamNumber", teamNum)
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
-                btn_continue, "proceed_button").toBundle())
+        btn_continue.setOnClickListener {
+            startActivity(
+                putExtras(), ActivityOptions.makeSceneTransitionAnimation(
+                    this,
+                    btn_continue, "proceed_button"
+                ).toBundle()
+            )
         }
     }
 }
