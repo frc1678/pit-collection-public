@@ -34,6 +34,7 @@ class ModeSelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.mode_selection)
+        toolbarText(actionBar, supportActionBar, this)
         if (this.getSharedPreferences("PREFS", 0).contains("mode_selection")) {
             startTeamList()
         } else {

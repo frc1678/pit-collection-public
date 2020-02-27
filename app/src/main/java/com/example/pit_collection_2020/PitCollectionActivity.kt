@@ -3,7 +3,6 @@ package com.example.pit_collection_2020
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
@@ -39,6 +38,8 @@ class PitCollectionActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
 
         teamNum = parseInt(intent.getStringExtra("teamNumber")!!.toString())
         tv_team_number.setText("$teamNum")
+
+        toolbarText(actionBar, supportActionBar, this)
 
         cameraButton("$teamNum")
         saveButton()

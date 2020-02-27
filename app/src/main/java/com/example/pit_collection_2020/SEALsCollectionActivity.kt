@@ -2,8 +2,6 @@ package com.example.pit_collection_2020
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.RadioButton
@@ -12,7 +10,6 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.snackbar.Snackbar
 import com.zetcode.subjJsonFileRead
 import kotlinx.android.synthetic.main.seals_collection.*
-import kotlinx.android.synthetic.main.team_info_collection.*
 import kotlinx.android.synthetic.main.team_info_collection.btn_save_button
 import kotlinx.android.synthetic.main.team_info_collection.tv_team_number
 import java.io.File
@@ -26,6 +23,7 @@ class SEALsCollectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.seals_collection)
+        toolbarText(actionBar, supportActionBar, this)
 
         this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 

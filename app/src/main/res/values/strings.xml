@@ -12,6 +12,9 @@
     <string name="Save">Save Button</string>
     <string name="error_back_reset">Do you want to reset the collection mode?</string>
     <string name="error_back">Please long press to reset the collection mode</string>
+    <string name="tv_version_num">Version: %1$s</string>
+    <string name="tv_objective_version">Version: %1$s, Objective Collection</string>
+    <string name="tv_subjective_version">Version: %1$s, Subjective Collection</string>
 
     <string-array name="drivetrain_array">
         <item>Drivetrain</item>

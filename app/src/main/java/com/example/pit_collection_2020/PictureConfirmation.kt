@@ -17,6 +17,8 @@ class PictureConfirmation : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_confirmation)
 
+        toolbarText(actionBar, supportActionBar, this)
+
         teamNum = intent?.getStringExtra("teamNumber").toString()
         fileName = intent?.getStringExtra("fileName").toString()
 

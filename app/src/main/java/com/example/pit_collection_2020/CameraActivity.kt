@@ -27,6 +27,8 @@ class CameraActivity : AppCompatActivity(), LifecycleOwner {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_preview)
 
+        toolbarText(actionBar, supportActionBar, this)
+
         createSpinner(picture_type, R.array.picture_types, this)
 
         teamNum = intent.getStringExtra("teamNumber")!!.toString()
