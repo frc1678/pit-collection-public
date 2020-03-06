@@ -7,7 +7,7 @@
     <solid
         android:color="#00FFFFFF"
         android:paddingLeft="10dp"
-        android:paddingTop="10dp"/>
+        android:paddingTop="10dp" />
     <padding
         android:left="10dp"
         android:top="10dp"

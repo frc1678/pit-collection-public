@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">pit-collection-2020</string>
-    <string name="pit_collection_mode">Objective Pit Collection</string>
-    <string name="seals_collection_mode">Subjective Pit Collection (SEALs)</string>
+    <string name="collection_objective">Objective Pit Collection</string>
+    <string name="collection_subjective">Subjective Pit Collection (SEALs)</string>
     <string name="FILLER_TEAM">Team Number</string>
     <string name="motor_number"># of Motors</string>
     <string name="ground_intake">Can Ground Intake</string>
@@ -9,7 +9,7 @@
     <string name="cross_trench">Can Cross Trench</string>
     <string name="no_cross_trench">Can NOT Cross Trench</string>
     <string name="team_number">1678</string>
-    <string name="Save">Save Button</string>
+    <string name="btn_save">Save Button</string>
     <string name="error_back_reset">Do you want to reset the collection mode?</string>
     <string name="error_back">Please long press to reset the collection mode</string>
     <string name="tv_version_num">Version: %1$s</string>
