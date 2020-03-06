@@ -110,10 +110,6 @@ class CameraActivity : AppCompatActivity(), LifecycleOwner {
         capture_button.setOnClickListener {
             val pictureType = picture_type.selectedItem.toString().toLowerCase(Locale.US)
             var fileName = "${teamNum}_${formatPictureType(pictureType)}"
-            if (pictureType == "mechanism") {
-                pictureNumber++
-                fileName = "${fileName}_${pictureNumber}"
-            }
             val file = File(
                 "/storage/emulated/0/${Environment.DIRECTORY_DOWNLOADS}/",
                 "$fileName.jpg"

@@ -33,6 +33,9 @@
     <string-array name="picture_types">
         <item>Full Robot</item>
         <item>Drivetrain</item>
-        <item>Mechanism</item>
+        <item>Intake</item>
+        <item>Indexer</item>
+        <item>Shooter</item>
+        <item>Climber</item>
     </string-array>
 </resources>
