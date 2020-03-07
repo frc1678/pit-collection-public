@@ -2,14 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.frc1678.pit_collection">
 
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:fullBackupContent="@null"
         android:icon="@mipmap/ic_launcher"

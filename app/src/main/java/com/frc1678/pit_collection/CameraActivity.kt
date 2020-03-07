@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Matrix
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.util.Size
 import android.view.Surface
 import android.view.TextureView
@@ -114,7 +113,6 @@ class CameraActivity : CollectionObjectiveActivity(), LifecycleOwner {
                         exc: Throwable?
                     ) {
                         val msg = "Photo capture failed: $message"
-                        Log.e("CameraXApp", msg, exc)
                         viewFinder.post {
                             Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                         }
@@ -128,8 +126,11 @@ class CameraActivity : CollectionObjectiveActivity(), LifecycleOwner {
                                     Intent(
                                         this@CameraActivity,
                                         CameraConfirmationActivity::class.java
-                                    ), teamNum
-                                ).putExtra("fileName", file.toString()),
+                                    ),
+                                    teamNum
+                                )
+                                    .putExtra("fileName", file.toString())
+                                    .putExtra("picture_type", picture_type.selectedItem.toString()),
                                 ActivityOptions.makeSceneTransitionAnimation(
                                     this@CameraActivity,
                                     capture_button, "proceed_button"
@@ -153,7 +154,6 @@ class CameraActivity : CollectionObjectiveActivity(), LifecycleOwner {
         return if (pictureType == "full robot") {
             pictureName = "full_robot"
             pictureName
-
         } else {
             pictureType
         }

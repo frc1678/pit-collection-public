@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">pit-collection-2020</string>
+    <string name="app_name">pit-collection</string>
     <string name="collection_objective">Objective Pit Collection</string>
     <string name="collection_subjective">Subjective Pit Collection (SEALs)</string>
     <string name="FILLER_TEAM">Team Number</string>

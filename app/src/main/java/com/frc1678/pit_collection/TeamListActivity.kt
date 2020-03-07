@@ -4,7 +4,6 @@ package com.frc1678.pit_collection
 import android.Manifest
 import android.app.ActivityOptions
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -18,7 +17,7 @@ import java.io.FileReader
 
 //Reads the csv file, populates a listView, and starts CollectionObjectiveDataActivity.
 class TeamListActivity : CollectionActivity() {
-    var teamsList: List<String> = emptyList()
+    private var teamsList: List<String> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,17 +25,13 @@ class TeamListActivity : CollectionActivity() {
         setToolbarText(actionBar, supportActionBar)
     }
 
-    fun csvFileRead(file: String, skipHeader: Boolean, context: Context): MutableList<String> {
-        val csvFile = File("/storage/emulated/0/${Environment.DIRECTORY_DOWNLOADS}/$file")
+    private fun csvFileRead(): MutableList<String> {
+        val csvFile = File("/storage/emulated/0/${Environment.DIRECTORY_DOWNLOADS}/team_list.csv")
         val csvFileContents: MutableList<String> = ArrayList()
         if (csvFile.exists()) {
             val csvReader = CSVReader(FileReader(csvFile))
             var currentLine: Array<String>? = csvReader.readNext()
             lateinit var currentMutableLine: String
-
-            if (skipHeader) {
-                csvReader.readNext()
-            }
 
             while (currentLine != null) {
                 //Resets the current line's value for every new line as the while loop proceeds.
@@ -53,7 +48,7 @@ class TeamListActivity : CollectionActivity() {
 
             csvReader.close()
         } else {
-            AlertDialog.Builder(context)
+            AlertDialog.Builder(this)
                 .setMessage("There is no teams list CSV file on this device")
                 .show()
         }
@@ -93,8 +88,8 @@ class TeamListActivity : CollectionActivity() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             == PackageManager.PERMISSION_GRANTED
         ) {
-            if (csvFileRead("team_list.csv", false, this) != ArrayList<String>()) {
-                teamsList = csvFileRead("team_list.csv", false, this)[0].trim().split(" ")
+            if (csvFileRead() != ArrayList<String>()) {
+                teamsList = csvFileRead()[0].trim().split(" ")
             }
             lv_teams_list.adapter = TeamListAdapter(
                 this,

@@ -23,6 +23,7 @@ class CameraConfirmationActivity : CollectionObjectiveActivity() {
         fileName = intent?.getStringExtra("fileName").toString()
 
         tv_team_number_confirm.text = teamNum
+        tv_picture_type.text = intent?.getStringExtra("picture_type").toString()
 
         displayImage(fileName!!)
         setOnClickListeners(teamNum.toString(), fileName.toString())
