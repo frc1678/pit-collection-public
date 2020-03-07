@@ -1,3 +1,4 @@
+// Copyright (c) 2019 FRC Team 1678: Citrus Circuits
 package com.frc1678.pit_collection
 
 import android.content.Intent
