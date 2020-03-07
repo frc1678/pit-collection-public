@@ -10,7 +10,8 @@ import java.io.File
 
 class TeamListAdapter(
     private val context: Context,
-    private val teamsList: List<String>
+    private val teamsList: List<String>,
+    private val mode: String
 ) : BaseAdapter() {
     private var inflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -18,17 +19,15 @@ class TeamListAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = with(inflater) { inflate(R.layout.team_cell, parent, false) }
         view.team_number.text = teamsList[position]
-        if (((retrieveFromStorage(
-                context,
-                "mode_collection_select_activity"
-            ) == Constants.ModeSelection.OBJECTIVE.toString()) and (File("/storage/emulated/0/Download/${teamsList[position]}_obj_pit.json").exists())
+        if (((mode == Constants.ModeSelection.OBJECTIVE.toString()) and (File(
+                "/storage/emulated/0/Download/${teamsList[position]}_obj_pit.json"
+            ).exists())
                     and (File("/storage/emulated/0/Download/${teamsList[position]}_drivetrain.jpg").exists()) and (File(
                 "/storage/emulated/0/Download/${teamsList[position]}_full_robot.jpg"
-            ).exists())) or ((retrieveFromStorage(
-                context,
-                "mode_collection_select_activity"
-            ) == Constants.ModeSelection.SUBJECTIVE.toString()) and (File("/storage/emulated/0/Download/${teamsList[position]}_subj_pit.json").exists())
-                    )
+            ).exists()))
+            or ((mode == Constants.ModeSelection.SUBJECTIVE.toString()) and (File(
+                "/storage/emulated/0/Download/${teamsList[position]}_subj_pit.json"
+            ).exists()))
         ) {
             view.setBackgroundColor(context.resources.getColor(R.color.green, null))
         }

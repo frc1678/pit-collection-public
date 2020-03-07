@@ -11,7 +11,6 @@ import android.view.Surface
 import android.view.TextureView
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.android.synthetic.main.camera_preview_activity.*
@@ -19,17 +18,16 @@ import java.io.File
 import java.util.*
 import java.util.concurrent.Executors
 
-class CameraActivity : AppCompatActivity(), LifecycleOwner {
+class CameraActivity : CollectionObjectiveActivity(), LifecycleOwner {
     private lateinit var teamNum: String
-    private var pictureNumber = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_preview_activity)
 
-        toolbarText(actionBar, supportActionBar, this)
+        setToolbarText(actionBar, supportActionBar)
 
-        createSpinner(picture_type, R.array.picture_types, this)
+        createSpinner(picture_type, R.array.picture_types)
 
         teamNum = intent.getStringExtra("teamNumber")!!.toString()
 
@@ -44,22 +42,16 @@ class CameraActivity : AppCompatActivity(), LifecycleOwner {
         }
     }
 
-    private fun putExtras(intentToNextActivity: Intent): Intent {
-        intentToNextActivity.putExtra(
-            "teamNumber", teamNum
-        ).putExtra("can_cross_trench", intent.getBooleanExtra("can_cross_trench", false))
-            .putExtra("has_ground_intake", intent.getBooleanExtra("has_ground_intake", false))
-            .putExtra("drivetrain_pos", intent.getIntExtra("drivetrain_pos", -1))
-            .putExtra("drivetrain_motor_pos", intent.getIntExtra("drivetrain_motor_pos", -1))
-            .putExtra("num_motors", intent.getIntExtra("num_motors", 0))
-            .putExtra("after_camera", true)
-        return intentToNextActivity
-    }
-
     private fun finishButton(teamNum: String) {
         btn_return.setOnClickListener {
             startActivity(
-                putExtras(Intent(this, CollectionObjectiveActivity::class.java)),
+                putExtras(
+                    intent,
+                    Intent(
+                        this,
+                        CollectionObjectiveDataActivity::class.java
+                    ).putExtra("after_camera", true), teamNum
+                ),
                 ActivityOptions.makeSceneTransitionAnimation(
                     this,
                     btn_return, "proceed_button"
@@ -67,8 +59,6 @@ class CameraActivity : AppCompatActivity(), LifecycleOwner {
             )
         }
     }
-
-    override fun onBackPressed() {}
 
     private val executor = Executors.newSingleThreadExecutor()
     private lateinit var viewFinder: TextureView
@@ -109,7 +99,7 @@ class CameraActivity : AppCompatActivity(), LifecycleOwner {
 
         capture_button.setOnClickListener {
             val pictureType = picture_type.selectedItem.toString().toLowerCase(Locale.US)
-            var fileName = "${teamNum}_${formatPictureType(pictureType)}"
+            val fileName = "${teamNum}_${formatPictureType(pictureType)}"
             val file = File(
                 "/storage/emulated/0/${Environment.DIRECTORY_DOWNLOADS}/",
                 "$fileName.jpg"
@@ -130,22 +120,21 @@ class CameraActivity : AppCompatActivity(), LifecycleOwner {
                     }
 
                     override fun onImageSaved(file: File) {
-                        this@CameraActivity.runOnUiThread(object : Runnable {
-                            override fun run() {
-                                startActivity(
-                                    putExtras(
-                                        Intent(
-                                            this@CameraActivity,
-                                            CameraConfirmationActivity::class.java
-                                        )
-                                    ).putExtra("fileName", file.toString()),
-                                    ActivityOptions.makeSceneTransitionAnimation(
+                        this@CameraActivity.runOnUiThread {
+                            startActivity(
+                                putExtras(
+                                    intent,
+                                    Intent(
                                         this@CameraActivity,
-                                        capture_button, "proceed_button"
-                                    ).toBundle()
-                                )
-                            }
-                        })
+                                        CameraConfirmationActivity::class.java
+                                    ), teamNum
+                                ).putExtra("fileName", file.toString()),
+                                ActivityOptions.makeSceneTransitionAnimation(
+                                    this@CameraActivity,
+                                    capture_button, "proceed_button"
+                                ).toBundle()
+                            )
+                        }
                     }
                 })
         }
@@ -159,13 +148,13 @@ class CameraActivity : AppCompatActivity(), LifecycleOwner {
 
     //deletes the space in the "full robot" picture type, replacing it with an "_"
     private fun formatPictureType(pictureType: String): String {
-        var pictureName = ""
-        if (pictureType == "full robot") {
+        val pictureName: String
+        return if (pictureType == "full robot") {
             pictureName = "full_robot"
-            return pictureName
+            pictureName
 
         } else {
-            return pictureType
+            pictureType
         }
     }
 

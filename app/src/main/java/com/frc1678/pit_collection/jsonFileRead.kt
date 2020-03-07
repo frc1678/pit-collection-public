@@ -1,13 +1,12 @@
-package com.zetcode
+package com.frc1678.pit_collection
 
-import com.frc1678.pit_collection.DataObjective
-import com.frc1678.pit_collection.DataSubjective
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import java.io.FileReader
 import java.lang.Integer.parseInt
 
-fun pitJsonFileRead(teamNum: Int?): DataObjective {
+// TODO CONSOLIDATE INTO A SINGLE FUNCTION
+fun objJsonFileRead(teamNum: Int?): Constants.DataObjective {
     val fileName = "/storage/emulated/0/Download/${teamNum}_obj_pit.json"
 
     // Make a json object called jo
@@ -25,33 +24,28 @@ fun pitJsonFileRead(teamNum: Int?): DataObjective {
     var boolHasGroundIntake: Boolean? = null
 
     // Make values from jo boolean instead of jsonObject
-    fun initSpecialVariables(): DataObjective {
-        when (crossTrench.toString()) {
-            "true" -> boolCrossTrench = true
-            "false" -> boolCrossTrench = false
-        }
-        when (hasGroundIntake.toString()) {
-            "true" -> boolHasGroundIntake = true
-            "false" -> boolHasGroundIntake = false
-        }
-
-        // Create a DataObjective object with the information from jo
-        var readInformation = DataObjective(
-            teamNum,
-            boolCrossTrench,
-            parseInt(indexNumDrivetrain.toString()),
-            boolHasGroundIntake,
-            parseInt(numberOfDriveMotors.toString()),
-            parseInt(indexNumMotor.toString())
-        )
-
-        return readInformation
-
+    when (crossTrench.toString()) {
+        "true" -> boolCrossTrench = true
+        "false" -> boolCrossTrench = false
     }
-    return initSpecialVariables()
+    when (hasGroundIntake.toString()) {
+        "true" -> boolHasGroundIntake = true
+        "false" -> boolHasGroundIntake = false
+    }
+
+    // Create a DataObjective object with the information from jo
+
+    return Constants.DataObjective(
+        teamNum,
+        boolCrossTrench,
+        parseInt(indexNumDrivetrain.toString()),
+        boolHasGroundIntake,
+        parseInt(numberOfDriveMotors.toString()),
+        parseInt(indexNumMotor.toString())
+    )
 }
 
-fun subjJsonFileRead(teamNum: Int?): DataSubjective {
+fun subjJsonFileRead(teamNum: Int?): Constants.DataSubjective {
     val fileName = "/storage/emulated/0/Download/${teamNum}_subj_pit.json"
 
     // Make a json object called jo
@@ -62,11 +56,9 @@ fun subjJsonFileRead(teamNum: Int?): DataSubjective {
     val climber_strap_installation_time = jo.get("climber_strap_installation_time")
     val climber_strap_installation_notes = jo.get("climber_strap_installation_notes")
 
-    val readInformation = DataSubjective(
+    return Constants.DataSubjective(
         teamNum,
         parseInt(climber_strap_installation_time.toString()),
         climber_strap_installation_notes?.toString()
     )
-
-    return readInformation
 }

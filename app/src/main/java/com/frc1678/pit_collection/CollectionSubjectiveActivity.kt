@@ -5,38 +5,36 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.RadioButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.snackbar.Snackbar
-import com.zetcode.subjJsonFileRead
 import kotlinx.android.synthetic.main.collection_subjective_activity.*
 import kotlinx.android.synthetic.main.collection_objective_activity.btn_save_button
 import kotlinx.android.synthetic.main.collection_objective_activity.tv_team_number
 import java.io.File
 
-class CollectionSubjectiveActivity : AppCompatActivity() {
+class CollectionSubjectiveActivity : CollectionActivity() {
 
-    var team_number: Int? = null
-    var climber_strap_installation_time: Int? = null
-    var climber_strap_installation_notes: String? = null
+    private var team_number: Int? = null
+    private var climber_strap_installation_time: Int? = null
+    private var climber_strap_installation_notes: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.collection_subjective_activity)
-        toolbarText(actionBar, supportActionBar, this)
+        setToolbarText(actionBar, supportActionBar)
 
         this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
         subjectiveNotesEntered()
 
-        team_number = Integer.parseInt(intent.getStringExtra("teamNumber").toString())
+        team_number = Integer.parseInt(intent?.getStringExtra("teamNumber").toString())
         tv_team_number.text = "$team_number"
 
         saveButton()
         populateScreen()
     }
 
-    fun populateScreen() {
+    private fun populateScreen() {
         if (File("/storage/emulated/0/Download/${team_number}_subj_pit.json").exists()) {
             val jsonFile = subjJsonFileRead(team_number)
             when (jsonFile.climber_strap_installation_time) {
@@ -92,31 +90,31 @@ class CollectionSubjectiveActivity : AppCompatActivity() {
         }
     }
 
-    fun subjectiveNotesEntered() {
+    private fun subjectiveNotesEntered() {
         et_subjective_notes.addTextChangedListener {
             climber_strap_installation_notes = et_subjective_notes.text.toString()
         }
     }
 
     //Saves data into a JSON file
-    fun saveButton() {
+    private fun saveButton() {
         btn_save_button.setOnClickListener {
             // If number of motors editText is empty, show Snackbar as a reminder
             if (climber_strap_installation_time == null) {
-                val climber_strap_installation_time_snack = Snackbar.make(
+                val climberStrapInstallationTimeSnack = Snackbar.make(
                     it,
                     "Please Enter A Climber Installation Time Value",
                     Snackbar.LENGTH_SHORT
                 )
-                climber_strap_installation_time_snack.show()
+                climberStrapInstallationTimeSnack.show()
             } else {
-                var subjectiveInformation = DataSubjective(
+                val subjectiveInformation = Constants.DataSubjective(
                     team_number,
                     climber_strap_installation_time,
                     climber_strap_installation_notes
                 )
-                var jsonData = convertToJson(subjectiveInformation)
-                var file_name = "${team_number}_subj_pit"
+                val jsonData = convertToJson(subjectiveInformation)
+                val file_name = "${team_number}_subj_pit"
                 writeToFile(file_name, jsonData)
                 val element = team_number
                 val intent = Intent(this, TeamListActivity::class.java)
