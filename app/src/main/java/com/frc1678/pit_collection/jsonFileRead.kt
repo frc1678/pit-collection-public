@@ -54,12 +54,12 @@ fun subjJsonFileRead(teamNum: Int?): Constants.DataSubjective {
     val jo = obj as JsonObject
 
     // Get values from the jo json file
-    val climber_strap_installation_time = jo.get("climber_strap_installation_time")
+    val climber_strap_installation_difficulty = jo.get("climber_strap_installation_difficulty")
     val climber_strap_installation_notes = jo.get("climber_strap_installation_notes")
 
     return Constants.DataSubjective(
         teamNum,
-        parseInt(climber_strap_installation_time.toString()),
+        parseInt(climber_strap_installation_difficulty.toString()),
         climber_strap_installation_notes?.toString()
     )
 }

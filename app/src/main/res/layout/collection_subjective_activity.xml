@@ -22,64 +22,119 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Time To Install Climber"
+                android:text="Climber Strap Installation Difficulty"
                 android:textSize="15dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:gravity="center" />
 
-            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_margin="@dimen/very_small">
+                android:layout_weight="1">
 
-                <RadioButton
-                    android:id="@+id/radio_zero"
-                    style="@style/radio_btns"
-                    android:text="Low"
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/radio_group_one"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:onClick="onRadioButtonClicked" />
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/very_small">
 
-                <RadioButton
-                    android:id="@+id/radio_one"
-                    style="@style/radio_btns"
-                    android:text="Average"
-                    android:gravity="center"
-                    android:onClick="onRadioButtonClicked" />
+                    <RadioButton
+                        android:id="@+id/radio_one"
+                        style="@style/radio_btns"
+                        android:text="1"
+                        android:gravity="center"
+                        android:onClick="onRadioButtonClicked" />
 
-                <RadioButton
-                    android:id="@+id/radio_two"
-                    style="@style/radio_btns"
-                    android:text="High"
-                    android:gravity="center"
-                    android:onClick="onRadioButtonClicked" />
+                    <RadioButton
+                        android:id="@+id/radio_two"
+                        style="@style/radio_btns"
+                        android:text="2"
+                        android:gravity="center"
+                        android:onClick="onRadioButtonClicked" />
 
-                <RadioButton
-                    android:id="@+id/radio_three"
-                    style="@style/radio_btns"
-                    android:text="Impossible"
+                    <RadioButton
+                        android:id="@+id/radio_three"
+                        style="@style/radio_btns"
+                        android:text="3"
+                        android:gravity="center"
+                        android:onClick="onRadioButtonClicked" />
+
+                    <RadioButton
+                        android:id="@+id/radio_four"
+                        style="@style/radio_btns"
+                        android:text="4"
+                        android:gravity="center"
+                        android:onClick="onRadioButtonClicked" />
+
+                    <RadioButton
+                        android:id="@+id/radio_five"
+                        style="@style/radio_btns"
+                        android:text="5"
+                        android:gravity="center"
+                        android:onClick="onRadioButtonClicked" />
+                </RadioGroup>
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/radio_group_two"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:onClick="onRadioButtonClicked" />
-            </RadioGroup>
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/very_small">
+
+                    <RadioButton
+                        android:id="@+id/radio_six"
+                        style="@style/radio_btns"
+                        android:text="6"
+                        android:gravity="center"
+                        android:onClick="onRadioButtonClicked" />
+
+                    <RadioButton
+                        android:id="@+id/radio_seven"
+                        style="@style/radio_btns"
+                        android:text="7"
+                        android:gravity="center"
+                        android:onClick="onRadioButtonClicked" />
+
+                    <RadioButton
+                        android:id="@+id/radio_eight"
+                        style="@style/radio_btns"
+                        android:text="8"
+                        android:gravity="center"
+                        android:onClick="onRadioButtonClicked" />
+
+                    <RadioButton
+                        android:id="@+id/radio_nine"
+                        style="@style/radio_btns"
+                        android:text="9"
+                        android:gravity="center"
+                        android:onClick="onRadioButtonClicked" />
+
+                    <RadioButton
+                        android:id="@+id/radio_ten"
+                        style="@style/radio_btns"
+                        android:text="10"
+                        android:gravity="center"
+                        android:onClick="onRadioButtonClicked" />
+                </RadioGroup>
+            </LinearLayout>
+
         </LinearLayout>
 
-        <Button
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:id="@+id/btn_save_button"
-            android:text="Save"
-            android:textSize="40dp"
-            android:layout_margin="@dimen/very_small" />
+
     </LinearLayout>
 
     <EditText
@@ -93,4 +148,13 @@
         android:background="@drawable/edittext_border"
         android:layout_margin="@dimen/very_small"
         android:hint="Climber installation notes" />
+
+    <Button
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/btn_save_button"
+        android:text="Save"
+        android:textSize="40dp"
+        android:layout_margin="@dimen/very_small" />
 </LinearLayout>
